@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="travelontip-externalsystem-suite.xml" />
+	<munit:test name="travelontip-externalsystemFlow-test" doc:id="1d9e9121-6613-4329-94bc-3f19374e1423" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="1ebe1584-5b83-4c78-b685-073c3be74d2c" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8aeef5e1-90c5-4a94-bdc5-7fe16c846499" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json  --- readUrl('classpath://travelontipexternalsystemFlowtest\mock_payload.dwl')]" mediaType="application/json " encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="serviceType" value="#[output application/java --- readUrl('classpath://travelontipexternalsystemFlowtest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="transactionId" value="#[output application/java --- readUrl('classpath://travelontipexternalsystemFlowtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="b42c13e1-dc28-44d5-bedd-d257a690db21" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d2a7d05-3284-4054-b3c3-870350a6e1d3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="bd2d4639-38fe-45b5-85d9-13dd4918b0b9" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="129277a9-2228-49a8-956a-3668358369e7" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest::spy_assert_attributes
+---
+spy_assert_attributes::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="373ced94-9596-41c7-94fd-14e6025aae23" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="f3130a51-bf6d-420b-81e8-9ec255aa8c20" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest::spy_assert_attributes1
+---
+spy_assert_attributes1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="49bb6422-e62e-4666-b9e6-b0c642e6735c" >
+				<munit:payload value="#[readUrl('classpath://travelontipexternalsystemFlowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://travelontipexternalsystemFlowtest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to travelontip-externalsystemFlow" doc:id="8fe362d3-4b07-4bc7-87f2-540901846c9c" name="travelontip-externalsystemFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="0f1134e6-4902-44d7-afd8-56d330831f3f" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="e5aea26b-6146-4c23-bf47-9f75d65f85f3" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="65ee720c-7c57-4974-a797-edd7880cea23" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="469faede-1eff-4658-825d-acf1c2e24dc4" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ecc71ef1-4596-4a0c-8966-dff64e9a05b1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="c7e56d1d-7676-4eb1-8055-91e7223004e6" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f06bf662-6e5a-42e3-bff9-260c503ef56f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="fa042af7-f304-4e1a-b2b4-7003687a6a39" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d2a7d05-3284-4054-b3c3-870350a6e1d3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="travelontip-externalsystemFlow-test1" doc:id="5f2e41d9-5730-49e6-9bd5-33bdabb1933a" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="095736e3-6164-49e1-8c9b-796bfa4f188f" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="910ce8a6-8bcf-4629-a4dc-dc58bb711e76" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json  --- readUrl('classpath://travelontipexternalsystemFlowtest1\mock_payload.dwl')]" mediaType="application/json " encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="serviceType" value="#[output application/java --- readUrl('classpath://travelontipexternalsystemFlowtest1\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="transactionId" value="#[output application/java --- readUrl('classpath://travelontipexternalsystemFlowtest1\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="02b37cff-7241-4ac4-becb-ab31634e4be8" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d2a7d05-3284-4054-b3c3-870350a6e1d3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="810871a6-6b40-4a7a-8ae2-8319d87d4a4b" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest1::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="aeb93c3c-ad3d-4933-9d22-207d24d9c23e" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest1::spy_assert_attributes
+---
+spy_assert_attributes::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="f7cb4bf2-0b23-46b7-887c-9808165e55dc" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest1::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="a1b74ae8-113c-4553-a5d4-fb29cb26ee40" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest1::spy_assert_attributes1
+---
+spy_assert_attributes1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="5947a516-d6f4-447b-9e27-5742dc3649b9" >
+				<munit:payload value="#[readUrl('classpath://travelontipexternalsystemFlowtest1\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://travelontipexternalsystemFlowtest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to travelontip-externalsystemFlow" doc:id="a5000a45-004b-4166-836e-a929c304830b" name="travelontip-externalsystemFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="acd2344a-4615-47d2-9823-69bf7929c206" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="d1850fbe-72e4-4641-ba7f-9892212b7c8b" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="dc13d673-e684-4bc2-9595-9f922ee5b807" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="1d2f83bf-34ee-4c86-a7be-5415eb09190d" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ecc71ef1-4596-4a0c-8966-dff64e9a05b1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="3b763e67-fb06-4cf4-9701-4de858419330" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f06bf662-6e5a-42e3-bff9-260c503ef56f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="4d371201-a834-4d01-ad1e-7ff4d54f1991" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d2a7d05-3284-4054-b3c3-870350a6e1d3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="travelontip-externalsystemFlow-test2" doc:id="211cffa7-5207-4bda-9561-70c627c04023" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="cd57099e-0092-4a56-8c67-18cbc99d8128" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d2a7d05-3284-4054-b3c3-870350a6e1d3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="b48365ab-8e48-424d-ba86-24471b0e5ae2" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="13f85daf-cbe1-453c-83f7-12c6186a797e" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_attributes
+---
+spy_assert_attributes::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="8ddbb62a-9602-4c69-88d4-26868ed5483e" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="f35bafe1-1ef4-4fae-9216-6cf8af2f832b" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_attributes1
+---
+spy_assert_attributes1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:spy doc:name="Spy Logger" doc:id="19696324-b943-4860-a0a2-c6522501cd0f" processor="logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5796e3e7-9e23-4d49-bf58-992d63b5371b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="563614fa-09ee-463c-a7b0-8c08ad460d88" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_payload2
+---
+spy_assert_payload2::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="0ef4f243-7a42-4534-9cbe-2d02f17252a5" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_attributes2
+---
+spy_assert_attributes2::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="9c2c9d5b-7b0e-464d-8f3d-a167499d9f9d" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_payload3
+---
+spy_assert_payload3::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="b1b34df9-fc08-41ad-b8e1-4d4df3143fbf" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::spy_assert_attributes3
+---
+spy_assert_attributes3::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="4f6f6b34-1fb9-4b69-b7eb-66aafbc754af" >
+				<munit:payload value="#[readUrl('classpath://travelontipexternalsystemFlowtest2\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://travelontipexternalsystemFlowtest2\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to travelontip-externalsystemFlow" doc:id="965f8478-0727-4cc7-bea9-a47ed58ab716" name="travelontip-externalsystemFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="03832dd9-b9a2-4898-b979-37e615901aeb" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import travelontipexternalsystemFlowtest2::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="66bf98a0-0f1e-49de-b16c-f1785820d7a9" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ecc71ef1-4596-4a0c-8966-dff64e9a05b1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="de8b9be3-2358-4dde-9efa-c0080778c92a" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f06bf662-6e5a-42e3-bff9-260c503ef56f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="8f8a243e-c65e-4b46-8356-b1640e423195" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d2a7d05-3284-4054-b3c3-870350a6e1d3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="5d006e95-6894-4af5-8c07-16ee7c4a8356" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5796e3e7-9e23-4d49-bf58-992d63b5371b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
